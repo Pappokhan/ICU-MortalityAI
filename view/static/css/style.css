@@ -1,0 +1,445 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --ink:#10233B;
+  --ink-soft:#3E5470;
+  --ink-faint:#7A8CA3;
+  --teal:#0E7C86;
+  --teal-deep:#0A5C64;
+  --teal-bright:#4FC3CE;
+  --mist:#F5F8F9;
+  --panel:#FFFFFF;
+  --line:#E5EBEE;
+  --low:#2F9E63;
+  --moderate:#D9A441;
+  --high:#DB6B3D;
+  --critical:#C1443C;
+
+  /* consistent radius / spacing scale, used across every panel */
+  --r-sm:8px;
+  --r-md:12px;
+  --r-lg:16px;
+  --shadow-card: 0 1px 2px rgba(16,35,59,0.05), 0 10px 28px -16px rgba(16,35,59,0.16);
+  --shadow-card-hover: 0 1px 2px rgba(16,35,59,0.06), 0 16px 34px -14px rgba(16,35,59,0.22);
+}
+
+html, body, [class*="css"]{
+  font-family:'IBM Plex Sans', -apple-system, sans-serif;
+  color:var(--ink);
+}
+
+/* Streamlit's own fixed top toolbar (hamburger menu / Deploy button /
+   the thin rainbow decoration line) sits at position:fixed, on top of
+   whatever the app renders first. Our custom header used to load right
+   underneath it with too little clearance, so its top edge — the logo
+   and "ICU-MortalityAI" — was being visually clipped by that bar. Since
+   this app has its own fully custom branded header, the native chrome
+   is hidden outright rather than chased with padding tweaks. */
+header[data-testid="stHeader"],
+div[data-testid="stToolbar"],
+div[data-testid="stDecoration"]{
+  display:none;
+}
+
+/* ---------- App shell (full-size, natural page scroll) ---------- */
+.stApp{
+  background:
+    radial-gradient(1100px 380px at 100% -10%, rgba(14,124,134,0.07), transparent),
+    radial-gradient(900px 320px at -10% 0%, rgba(79,195,206,0.05), transparent),
+    var(--mist);
+}
+
+/* Contained, centered app shell — reads as a product, not a bare page */
+.block-container{
+  width:100%;
+  max-width:1360px;
+  padding-top:1.4rem;
+  padding-left:2rem;
+  padding-right:2rem;
+}
+
+/* ---------- Header ---------- */
+.clinical-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+  padding:4px 0 22px 0;
+  border-bottom:1px solid var(--line);
+  margin-bottom:24px;
+}
+.clinical-header .header-copy{ flex:1; min-width:0; }
+.brand-row{ display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.brand-mark{
+  width:38px; height:38px; border-radius:var(--r-sm);
+  background:linear-gradient(155deg, var(--ink) 0%, #16324F 100%);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 4px 10px -4px rgba(16,35,59,0.45);
+}
+.brand-name{
+  font-family:'Source Serif 4', serif;
+  font-weight:600;
+  font-size:20px;
+  color:var(--ink);
+  letter-spacing:-0.01em;
+}
+.brand-name .accent{ color:var(--teal); }
+.clinical-header h1{
+  font-family:'Source Serif 4', serif;
+  font-weight:600;
+  font-size:27px;
+  line-height:1.22;
+  margin:0;
+  color:var(--ink);
+}
+.clinical-header p{
+  margin:9px 0 0 0;
+  max-width:62ch;
+  color:var(--ink-soft);
+  font-size:14.5px;
+  line-height:1.6;
+}
+.clinical-header .badge-col{
+  display:flex; flex-direction:column; align-items:flex-end; gap:8px;
+  flex-shrink:0;
+}
+.clinical-header .badge{
+  display:inline-flex; align-items:center; gap:7px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11.5px;
+  color:var(--teal-deep);
+  background:rgba(14,124,134,0.08);
+  border:1px solid rgba(14,124,134,0.25);
+  padding:7px 13px;
+  border-radius:999px;
+  white-space:nowrap;
+  letter-spacing:.02em;
+}
+.badge .dot{
+  width:7px; height:7px; border-radius:50%;
+  background:#2F9E63;
+  box-shadow:0 0 0 3px rgba(47,158,99,0.18);
+  flex-shrink:0;
+  margin-right:7px; /* explicit fallback alongside flex `gap` */
+}
+
+/* Let the header wrap and the brand text break cleanly instead of being
+   squeezed/clipped by the non-shrinking badge on narrower viewports. */
+.brand-name{ overflow-wrap:anywhere; }
+.clinical-header h1{ overflow-wrap:anywhere; }
+
+/* ---------- Example bar ---------- */
+.example-label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11.5px;
+  letter-spacing:.03em;
+  color:var(--ink-faint);
+  margin:0 0 10px 2px;
+  text-transform:uppercase;
+}
+
+/* ---------- Section cards (intake form) ---------- */
+.section-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:22px 24px 8px 24px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow-card);
+  transition:box-shadow .18s ease, border-color .18s ease;
+}
+.section-card:hover{ border-color:rgba(14,124,134,0.28); }
+.section-card h3{
+  font-family:'Source Serif 4', serif;
+  font-weight:600;
+  font-size:17px;
+  margin:0 0 4px 0;
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  gap:11px;
+  line-height:1;
+}
+.section-card .section-sub{
+  font-size:13px;
+  color:var(--ink-soft);
+  margin:0 0 16px 0;
+  padding-left:33px;
+}
+.section-index{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  color:var(--teal);
+  background:rgba(14,124,134,0.07);
+  border:1px solid rgba(14,124,134,0.35);
+  border-radius:50%;
+  width:22px;height:22px;
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  line-height:1;
+}
+
+/* ---------- Age picker: label-matched alignment ---------- */
+.age-picker-row{ align-items:flex-end !important; }
+.age-readout-label{
+  font-size:13.5px;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.4;
+  margin-bottom:0.5rem;
+  height:1.4em;
+  display:flex;
+  align-items:center;
+}
+.age-readout{
+  font-size:13px;
+  color:var(--ink-soft);
+  background:rgba(14,124,134,0.06);
+  border:1px solid rgba(14,124,134,0.18);
+  border-radius:var(--r-sm);
+  padding:0 14px;
+  height:2.9rem;
+  display:flex;
+  align-items:center;
+  line-height:1.35;
+}
+.age-readout strong{ color:var(--ink); }
+
+/* Keep native widget spacing tight and consistent everywhere */
+div[data-testid="stVerticalBlock"] > div{gap:0.45rem;}
+.stSlider, .stNumberInput, .stSelectbox{margin-bottom:2px;}
+label[data-testid="stWidgetLabel"] p{
+  font-size:13.5px !important;
+  color:var(--ink) !important;
+  font-weight:500;
+}
+
+/* ---------- Buttons ---------- */
+.stButton>button{
+  background:var(--ink);
+  color:#fff;
+  border:none;
+  border-radius:var(--r-sm);
+  padding:0.7em 1.4em;
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:0.01em;
+  transition:background .15s ease, transform .1s ease, box-shadow .15s ease;
+  width:100%;
+  box-shadow:0 6px 16px -8px rgba(16,35,59,0.55);
+}
+.stButton>button:hover{ background:var(--teal-deep); }
+.stButton>button:active{ transform:scale(0.99); }
+
+div[data-testid="column"] .stButton>button[kind="secondary"]{
+  background:#fff;
+  color:var(--ink);
+  border:1px solid var(--line);
+  box-shadow:none;
+  font-size:13.5px;
+  padding:0.6em 0.9em;
+  min-height:2.6rem;
+}
+div[data-testid="column"] .stButton>button[kind="secondary"]:hover{
+  border-color:var(--teal);
+  color:var(--teal-deep);
+  background:rgba(14,124,134,0.05);
+}
+
+.stDownloadButton>button{
+  background:#fff;
+  color:var(--teal-deep);
+  border:1px solid rgba(14,124,134,0.35);
+  border-radius:var(--r-sm);
+  font-weight:600;
+  font-size:13.5px;
+  padding:0.65em 1.2em;
+  width:100%;
+  margin-top:14px;
+  box-shadow:none;
+  transition:background .15s ease, border-color .15s ease;
+}
+.stDownloadButton>button:hover{
+  background:rgba(14,124,134,0.06);
+  border-color:var(--teal);
+}
+
+/* ---------- Sticky result column: the "AI application" feel ---------- */
+/* The right-hand column is tagged with a hidden .sticky-anchor span from
+   Python; :has() lets us pin that specific Streamlit column without
+   depending on fragile nth-of-type ordering (there are other st.columns
+   rows on the page — the example bar, the age picker). */
+div[data-testid="stHorizontalBlock"]{ align-items:flex-start; }
+div[data-testid="column"]:has(.sticky-anchor){
+  position:sticky;
+  top:1.4rem;
+}
+.sticky-anchor{ display:block; height:0; }
+
+/* ---------- Result card (rendered inline, no iframe) ---------- */
+.result-card{
+  background:linear-gradient(165deg, #10233B 0%, #14293F 100%);
+  border-radius:var(--r-lg);
+  padding:28px 26px 24px 26px;
+  color:#fff;
+  box-shadow:0 1px 2px rgba(16,35,59,0.08), 0 20px 40px -20px rgba(16,35,59,0.55);
+  animation:panel-in .35s ease both;
+}
+@keyframes panel-in{
+  from{ opacity:0; transform:translateY(6px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+.r-eyebrow{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#9FD9DE;
+  margin:0 0 6px 0; letter-spacing:.04em; text-transform:uppercase;
+}
+.result-card h2{ font-family:'Source Serif 4',serif; font-size:21px; margin:0 0 16px 0; font-weight:600;}
+.gauge-wrap{ display:flex; justify-content:center; margin:4px 0 4px 0;}
+.gauge-svg{
+  animation:gauge-in .5s cubic-bezier(.22,.9,.3,1) both; animation-delay:.05s;
+  /* Fluid width so the gauge scales down with its column instead of
+     overflowing on narrow tablet/phone viewports; height follows via
+     the SVG's own viewBox aspect ratio. */
+  width:100%;
+  max-width:220px;
+  height:auto;
+}
+@keyframes gauge-in{
+  from{ opacity:0; transform:scale(.92); }
+  to{ opacity:1; transform:scale(1); }
+}
+.gauge-readout{ text-align:center; font-family:'IBM Plex Mono',monospace;}
+.gauge-readout .pct{ font-size:42px; font-weight:600; display:block; line-height:1.1;}
+.gauge-readout .lbl{ font-size:12.5px; color:#B9C7D6;}
+.pill-row{ display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:12px;}
+.risk-pill{ display:inline-flex; align-items:center; padding:6px 14px; border-radius:999px; font-size:13px; font-weight:600;}
+.risk-pill.low{ background:rgba(47,158,99,0.18); color:#7BE0A6;}
+.risk-pill.moderate{ background:rgba(217,164,65,0.18); color:#F0C56E;}
+.risk-pill.high{ background:rgba(219,107,61,0.18); color:#F2A47D;}
+.risk-pill.critical{ background:rgba(193,68,60,0.22); color:#F3948C;}
+.agreement-pill{ display:inline-flex; align-items:center; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:500; background:rgba(255,255,255,0.1); color:#B9C7D6;}
+.plain-language{ text-align:center; font-size:13px; color:#D7E3EC; line-height:1.6; margin:16px auto 0 auto; max-width:40ch;}
+.model-votes{ margin-top:20px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.12);}
+.mv-title{ font-size:11.5px; color:#B9C7D6; margin-bottom:12px; font-family:'IBM Plex Mono',monospace; letter-spacing:.03em; text-transform:uppercase;}
+.mv-row{ display:flex; align-items:center; gap:12px; margin-bottom:9px;}
+.mv-row .mv-name{ width:66px; flex-shrink:0; font-size:11.5px; color:#B9C7D6; font-family:'IBM Plex Mono',monospace;}
+.mv-row .mv-bar-track{ flex:1; height:6px; background:rgba(255,255,255,0.12); border-radius:3px; overflow:hidden;}
+.mv-row .mv-bar-fill{ height:100%; background:linear-gradient(90deg, var(--teal-bright), #7FE0E6); border-radius:3px; width:0; animation:bar-grow .7s cubic-bezier(.22,.9,.3,1) forwards;}
+@keyframes bar-grow{ to{ width:var(--w); } }
+.mv-row .mv-val{ width:44px; flex-shrink:0; text-align:right; font-size:11.5px; font-family:'IBM Plex Mono',monospace; color:#fff;}
+.empty-result{ color:#B9C7D6; font-size:14px; line-height:1.65; margin:6px 0 4px 0;}
+.empty-icon{
+  width:44px; height:44px; border-radius:var(--r-sm);
+  background:rgba(255,255,255,0.08);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:14px;
+}
+
+/* ---------- How-it-works ---------- */
+.callout{
+  background:#fff;
+  border:1px solid var(--line);
+  border-left:4px solid var(--teal);
+  border-radius:var(--r-sm);
+  padding:15px 17px;
+  font-size:13.5px;
+  color:var(--ink-soft);
+  line-height:1.6;
+  margin:6px 0 18px 0;
+  box-shadow:var(--shadow-card);
+}
+.callout strong{ color:var(--ink); }
+
+.error-card{
+  background:#FDF1EF;
+  border:1px solid rgba(193,68,60,0.35);
+  border-left:4px solid var(--critical);
+  border-radius:var(--r-sm);
+  padding:16px 18px;
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+.error-card .e-title{ font-weight:600; margin-bottom:4px; display:block; }
+
+.footnote{
+  font-size:12px;
+  color:var(--ink-faint);
+  margin-top:30px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  line-height:1.6;
+}
+
+/* =========================================================
+   Responsive breakpoints — laptop is the default design above;
+   these adapt it down for tablets and phones.
+   ========================================================= */
+
+/* ---------- Tablet (~1024px and down) ---------- */
+@media (max-width: 1024px){
+  .block-container{ padding-left:1.1rem; padding-right:1.1rem; }
+
+  /* Sticky right-hand result column only makes sense side-by-side;
+     once Streamlit stacks the columns (see phone breakpoint) it must
+     not stay pinned, so switch it off a little earlier too, at the
+     point content starts feeling tight. */
+  div[data-testid="column"]:has(.sticky-anchor){ top:1rem; }
+
+  .clinical-header{ gap:20px; }
+  .clinical-header h1{ font-size:24px; }
+}
+
+/* ---------- Phone / narrow tablet (~860px and down) ---------- */
+@media (max-width: 860px){
+  /* The badge never shrinks (flex-shrink:0) and the header row never
+     wrapped, so on narrow screens it crushed the title text into a
+     sliver of space — that's what was cutting "ICU-MortalityAI" off.
+     Stack the badge under the title instead of beside it. */
+  .clinical-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:14px;
+    padding-bottom:18px;
+  }
+  .clinical-header .badge-col{
+    align-items:flex-start;
+    width:100%;
+  }
+  .clinical-header .badge{ white-space:normal; }
+
+  /* Result column no longer sits beside the form once Streamlit
+     stacks columns at this width, so a sticky offset just leaves a
+     stray gap above it. */
+  div[data-testid="column"]:has(.sticky-anchor){
+    position:static;
+    top:auto;
+  }
+}
+
+/* ---------- Phone (~640px and down) ---------- */
+@media (max-width: 640px){
+  .block-container{ padding-top:1rem; padding-left:0.85rem; padding-right:0.85rem; }
+
+  .brand-mark{ width:32px; height:32px; }
+  .brand-name{ font-size:17px; }
+  .clinical-header h1{ font-size:20px; line-height:1.28; }
+  .clinical-header p{ font-size:13.5px; }
+  .badge{ font-size:10.5px; padding:6px 10px; }
+
+  .section-card{ padding:18px 16px 6px 16px; }
+  .section-card h3{ font-size:16px; }
+  .section-card .section-sub{ padding-left:0; margin-top:2px; }
+
+  .result-card{ padding:22px 18px 20px 18px; }
+  .result-card h2{ font-size:18px; }
+  .gauge-readout .pct{ font-size:34px; }
+  .plain-language{ max-width:none; }
+
+  .mv-row .mv-name{ width:56px; font-size:10.5px; }
+  .mv-row .mv-val{ width:38px; font-size:10.5px; }
+
+  .footnote{ font-size:11.5px; }
+}
