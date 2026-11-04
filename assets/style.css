@@ -1,0 +1,128 @@
+/* ICU-MortalityAI — styles injected by views/layout.py.
+   Everything is sized in rem and the root font-size follows the viewport HEIGHT,
+   so the whole two-column page scales to fit a 16:9 desktop screen without scrolling.
+   Colours use rgba / currentColor so the page works in light and dark themes. */
+:root {
+  --icu-accent: #0f766e;
+  --icu-low: #15803d;
+  --icu-moderate: #d97706;
+  --icu-high: #dc2626;
+  --icu-border: rgba(128, 128, 128, 0.28);
+  --icu-soft: rgba(128, 128, 128, 0.08);
+  --icu-radius: .8rem;
+}
+
+/* ---------- fit-to-screen scaling ---------- */
+html { font-size: clamp(10px, min(1.6vh, 1vw), 26px) !important; }
+.block-container { max-width: 100% !important; padding: .8rem 1.6rem .3rem !important; }
+header[data-testid="stHeader"] { height: 0; background: transparent; }
+#MainMenu, footer { visibility: hidden; }
+div[data-testid="stVerticalBlock"] { gap: .35rem; }
+div[data-testid="stHorizontalBlock"] { gap: .6rem; }
+div[data-testid="stMarkdown"], div[data-testid="stMarkdownContainer"] { margin-bottom: 0 !important; }
+div[data-testid="stMarkdownContainer"] p { margin: 0 0 .1rem; }
+
+/* ---------- header ---------- */
+.icu-header {
+  display: flex; align-items: center; gap: .8rem; flex-wrap: nowrap;
+  padding: .65rem 1rem; margin-bottom: .1rem;
+  border: 1px solid var(--icu-border); border-radius: var(--icu-radius);
+  background: linear-gradient(135deg, rgba(15,118,110,.14), rgba(15,118,110,.02));
+}
+.icu-header__logo { font-size: 1.8rem; line-height: 1; }
+.icu-header__text { min-width: 0; }
+.icu-header__title { font-size: 1.5rem; line-height: 1.2; font-weight: 700; white-space: nowrap; }
+.icu-header__sub { margin: .15rem 0 0; opacity: .75; font-size: .8rem; line-height: 1.3; }
+.icu-pill {
+  display: inline-block; padding: .22rem .65rem; border-radius: 999px; white-space: nowrap;
+  font-size: .68rem; font-weight: 600; border: 1px solid var(--icu-border);
+}
+.icu-header .icu-pill { margin-left: auto; }
+.icu-pill--warn { background: rgba(217,119,6,.14); color: var(--icu-moderate); border-color: rgba(217,119,6,.4); }
+
+/* ---------- form sections & widgets ---------- */
+.icu-section {
+  margin: .7rem 0 .4rem; padding-left: .6rem; line-height: 1.5;
+  font-weight: 700; font-size: .95rem; letter-spacing: .01em;
+  border-left: .25rem solid var(--icu-accent);
+}
+.icu-section--first { margin-top: 0; }
+div[data-testid="stCaptionContainer"] { margin: .45rem 0 0; }
+div[data-testid="stCaptionContainer"] p { font-size: .75rem; line-height: 1.3; }
+div[data-testid="stWidgetLabel"] { min-height: 0; margin-bottom: .1rem; }
+div[data-testid="stWidgetLabel"] p { font-size: .76rem; line-height: 1.25; }
+div[data-baseweb="input"], div[data-baseweb="select"] > div { min-height: 2.1rem; }
+div[data-testid="stNumberInput"] input { padding: .15rem .55rem; font-size: .9rem; }
+div[data-testid="stNumberInput"] button { min-height: 2.1rem; }
+div[data-testid="stCheckbox"] { min-height: 2.1rem; display: flex; align-items: center; }
+div[data-testid="stCheckbox"] label p { font-size: .72rem; line-height: 1.1; }
+.icu-na-spacer { height: 1.4rem; }   /* only used on old Streamlit without vertical_alignment */
+
+/* ---------- risk banner ---------- */
+.icu-band {
+  margin: .4rem 0 .6rem; padding: .65rem 1rem; border-radius: var(--icu-radius);
+  border: 1px solid var(--icu-border); border-left-width: .45rem;
+}
+.icu-band__label { font-size: 1.3rem; line-height: 1.25; font-weight: 800; }
+.icu-band__text { opacity: .8; font-size: .82rem; margin-top: .1rem; }
+.icu-band--low      { border-left-color: var(--icu-low);      background: rgba(21,128,61,.10); }
+.icu-band--moderate { border-left-color: var(--icu-moderate); background: rgba(217,119,6,.10); }
+.icu-band--high     { border-left-color: var(--icu-high);     background: rgba(220,38,38,.10); }
+.icu-band--low .icu-band__label      { color: var(--icu-low); }
+.icu-band--moderate .icu-band__label { color: var(--icu-moderate); }
+.icu-band--high .icu-band__label     { color: var(--icu-high); }
+
+/* ---------- metric cards ---------- */
+.icu-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin-bottom: .65rem; }
+.icu-card {
+  padding: .6rem .85rem; border: 1px solid var(--icu-border);
+  border-radius: var(--icu-radius); background: var(--icu-soft);
+}
+.icu-card__title { font-size: .66rem; text-transform: uppercase; letter-spacing: .06em; opacity: .7; line-height: 1.3; }
+.icu-card__value { font-size: 1.6rem; line-height: 1.2; font-weight: 800; margin: .15rem 0 .3rem; }
+.icu-badge {
+  display: inline-block; padding: .12rem .6rem; border-radius: 999px;
+  font-size: .68rem; font-weight: 700; color: #fff; line-height: 1.3;
+}
+.icu-badge--low { background: var(--icu-low); }
+.icu-badge--moderate { background: var(--icu-moderate); }
+.icu-badge--high { background: var(--icu-high); }
+.icu-badge--neutral { background: rgba(128,128,128,.55); }
+
+/* ---------- panels & bars ---------- */
+.icu-panel {
+  padding: .6rem 1rem .65rem; margin-bottom: .65rem;
+  border: 1px solid var(--icu-border); border-radius: var(--icu-radius);
+}
+.icu-panel__title { font-weight: 700; font-size: .92rem; line-height: 1.3; margin-bottom: .3rem; }
+.icu-row { display: grid; grid-template-columns: 15rem 1fr 4rem; align-items: center; gap: .7rem; padding: .12rem 0; }
+.icu-row__name { font-size: .78rem; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.icu-row__value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; font-size: .8rem; }
+.icu-bar { height: .62rem; border-radius: 999px; background: var(--icu-soft); border: 1px solid var(--icu-border); overflow: hidden; }
+.icu-bar__fill { height: 100%; border-radius: 999px; }
+.icu-bar__fill--accent { background: var(--icu-accent); }
+.icu-bar__fill--up { background: var(--icu-high); }
+.icu-bar__fill--down { background: var(--icu-low); }
+.icu-note { font-size: .7rem; opacity: .7; margin: .4rem 0 .15rem; line-height: 1.4; }
+
+/* ---------- placeholder, error, footer ---------- */
+.icu-placeholder {
+  padding: 2.2rem 1.4rem; text-align: center; border: 2px dashed var(--icu-border);
+  border-radius: var(--icu-radius); opacity: .75; margin-top: .4rem; font-size: .85rem;
+}
+.icu-placeholder strong { display: block; font-size: 1rem; margin-bottom: .2rem; }
+.icu-error { padding: .8rem 1rem; border-radius: var(--icu-radius); border: 1px solid rgba(220,38,38,.5); background: rgba(220,38,38,.10); }
+.icu-footer { margin-top: .5rem; padding-top: .5rem; border-top: 1px solid var(--icu-border); font-size: .7rem; opacity: .65; text-align: center; }
+
+/* ---------- buttons ---------- */
+div.stButton > button[kind="primary"], div.stDownloadButton > button {
+  border-radius: .6rem; padding: .35rem 1.2rem; font-weight: 700; font-size: .9rem; min-height: 2.3rem;
+}
+div.stButton > button[kind="primary"] { background: var(--icu-accent); border: none; }
+div.stButton > button[kind="primary"]:hover { filter: brightness(1.1); }
+div.stDownloadButton > button { width: 100%; border: 1.5px solid var(--icu-accent); color: var(--icu-accent); background: transparent; }
+div.stDownloadButton > button:hover { background: var(--icu-accent); color: #fff; border-color: var(--icu-accent); }
+
+/* download button: full width of the result column, clear gap above */
+div[data-testid="stDownloadButton"] { width: 100%; margin-top: .2rem; }
+div[data-testid="stDownloadButton"] > button { width: 100%; }

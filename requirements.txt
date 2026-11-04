@@ -1,0 +1,6 @@
+streamlit>=1.36
+numpy
+pandas
+scikit-learn==1.5.0
+reportlab>=4.0
+xgboost

@@ -1,0 +1,7 @@
+<div class="icu-panel">
+  <div class="icu-panel__title">Per-partition predictions</div>
+  $partition_rows
+  <div class="icu-note">The five partitions are stratified splits of one dataset, not independent hospitals. The ensemble averages predicted probabilities; it is not parameter-averaging FedAvg.</div>
+</div>
+$drivers_panel
+<div class="icu-note">Risk bands: Low &lt; $t_youden (Youden's J, high-sensitivity cut-off) · Moderate $t_youden–$t_f1max · High ≥ $t_f1max (F1-maximising cut-off). Models were trained on a SMOTE-balanced set, so probabilities are not calibrated to real-world mortality — interpret the bands, not the raw percentages.</div>
